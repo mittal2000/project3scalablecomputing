@@ -2,6 +2,7 @@ package server
 
 import (
 	"errors"
+	"io"
 	"net"
 	"os"
 	"strconv"
@@ -99,6 +100,9 @@ func handleTCPConnection(conn *net.TCPConn) {
 	buffer := make([]byte, 1024)
 	for {
 		n, err := conn.Read(buffer)
+		if err == io.EOF {
+			break
+		}
 		if err != nil {
 			logger.Error(err)
 		}
