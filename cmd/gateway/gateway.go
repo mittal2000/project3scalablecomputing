@@ -74,7 +74,7 @@ func runBackground(fn func()) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		internal.RunTLS()
+		fn()
 	}()
 }
 
@@ -85,9 +85,9 @@ func init() {
 	logger = log.New(os.Stderr)
 
 	flag.StringVar(&dir, "dir", ".", "directory to save data")
-	flag.StringVar(&externalHostName, "host", "127.0.0.1", "")
+	flag.StringVar(&externalHostName, "host", "rasp-019.scss.tcd.ie", "")
 	flag.IntVar(&externalPort, "port", 33000, "")
-	flag.StringVar(&internalHostName, "subhost", "rasp-019.scss.tcd.ie", "")
+	flag.StringVar(&internalHostName, "subhost", "127.0.0.1", "")
 	flag.IntVar(&internalPort, "subport", 443, "")
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
