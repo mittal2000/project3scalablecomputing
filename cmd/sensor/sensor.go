@@ -56,7 +56,10 @@ var (
 // similarly for sensors will have to change this to sensorDataMap and entities.SensorData
 	sensorDataMap map[string]entities.SensorData
 
+<<<<<<< HEAD
 	// internal *p2pserver.P2PServer
+=======
+>>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
 	external *p2pserver.P2PServer
 	client   *http.Client
 
@@ -160,12 +163,15 @@ func init() {
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
 
+<<<<<<< HEAD
 	//internal = p2pserver.NewServer(internalHostName, internalPort,
 	//	dir+"/internal.server.key",
 	//	dir+"/internal.server.crt",
 	//	dir+"/ca.crt",
 	//	internalMsgCbk)
 
+=======
+>>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
 	external = p2pserver.NewServer(externalHostName, externalPort,
 		dir+"/external.server.key",
 		dir+"/external.server.crt",
@@ -197,7 +203,10 @@ func init() {
 }
 
 func main() {
+<<<<<<< HEAD
 //	runBackground(internal.RunTLS)
+=======
+>>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
 	runBackground(external.RunTLS)
 	runBackground(c.Start)
 
