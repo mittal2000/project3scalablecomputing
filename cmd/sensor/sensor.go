@@ -20,6 +20,8 @@ import (
 // the io/ioutil package implements some I/O utility functions
 // WHAT ARE I/O UTILITY FUNCTIONS?????
 	"io/ioutil"
+// for generating random numbers
+  "math/rand"
 // the net/http package is for the Listening for connections probably
 // it provides HTTP client and server implementations
 // WOW MUCH SECURITY
@@ -56,10 +58,6 @@ var (
 // similarly for sensors will have to change this to sensorDataMap and entities.SensorData
 	sensorDataMap map[string]entities.SensorData
 
-<<<<<<< HEAD
-	// internal *p2pserver.P2PServer
-=======
->>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
 	external *p2pserver.P2PServer
 	client   *http.Client
 
@@ -145,14 +143,16 @@ func runBackground(fn func()) {
 func init() {
 	clientToken = make(map[string]string)
 	sensorDataMap = make(map[string]entities.SensorData)
-  sensor1 =
-	sensor2 =
-	sensor3 = 
-	sensor4 =
-	sensor5 =
-	sensor6 =
-	sensor7 =
-	sensor8 =
+	max = 100
+  min = 10
+  sensor1 = rand.Intn(max - min) + min
+	sensor2 = rand.Intn(max - min) + min
+	sensor3 = rand.Intn(max - min) + min
+	sensor4 = rand.Intn(max - min) + min
+	sensor5 = rand.Intn(max - min) + min
+	sensor6 = rand.Intn(max - min) + min
+	sensor7 = rand.Intn(max - min) + min
+	sensor8 = rand.Intn(max - min) + min
 	logger = log.New(os.Stderr)
 
 	flag.StringVar(&dir, "dir", ".", "directory to save data")
@@ -162,16 +162,7 @@ func init() {
 	flag.IntVar(&internalPort, "subport", 443, "")
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
-
-<<<<<<< HEAD
-	//internal = p2pserver.NewServer(internalHostName, internalPort,
-	//	dir+"/internal.server.key",
-	//	dir+"/internal.server.crt",
-	//	dir+"/ca.crt",
-	//	internalMsgCbk)
-
-=======
->>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
+  sensorDataMap[internalHostName] = {"sensor1": sensor1, "sensor2": sensor2, "sensor3": sensor3, "sensor4": sensor4, "sensor5": sensor5, "sensor6": sensor6, "sensor7": sensor7, "sensor8": sensor8}
 	external = p2pserver.NewServer(externalHostName, externalPort,
 		dir+"/external.server.key",
 		dir+"/external.server.crt",
@@ -203,10 +194,6 @@ func init() {
 }
 
 func main() {
-<<<<<<< HEAD
-//	runBackground(internal.RunTLS)
-=======
->>>>>>> 645bf699c95388eeea41ee91f249d39a2c298d2f
 	runBackground(external.RunTLS)
 	runBackground(c.Start)
 
