@@ -56,7 +56,7 @@ var (
 // similarly for sensors will have to change this to sensorDataMap and entities.SensorData
 	sensorDataMap map[string]entities.SensorData
 
-	internal *p2pserver.P2PServer
+	// internal *p2pserver.P2PServer
 	external *p2pserver.P2PServer
 	client   *http.Client
 
@@ -142,7 +142,14 @@ func runBackground(fn func()) {
 func init() {
 	clientToken = make(map[string]string)
 	sensorDataMap = make(map[string]entities.SensorData)
-
+  sensor1 =
+	sensor2 =
+	sensor3 = 
+	sensor4 =
+	sensor5 =
+	sensor6 =
+	sensor7 =
+	sensor8 =
 	logger = log.New(os.Stderr)
 
 	flag.StringVar(&dir, "dir", ".", "directory to save data")
@@ -153,11 +160,11 @@ func init() {
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
 
-	internal = p2pserver.NewServer(internalHostName, internalPort,
-		dir+"/internal.server.key",
-		dir+"/internal.server.crt",
-		dir+"/ca.crt",
-		internalMsgCbk)
+	//internal = p2pserver.NewServer(internalHostName, internalPort,
+	//	dir+"/internal.server.key",
+	//	dir+"/internal.server.crt",
+	//	dir+"/ca.crt",
+	//	internalMsgCbk)
 
 	external = p2pserver.NewServer(externalHostName, externalPort,
 		dir+"/external.server.key",
@@ -190,7 +197,7 @@ func init() {
 }
 
 func main() {
-	runBackground(internal.RunTLS)
+//	runBackground(internal.RunTLS)
 	runBackground(external.RunTLS)
 	runBackground(c.Start)
 
