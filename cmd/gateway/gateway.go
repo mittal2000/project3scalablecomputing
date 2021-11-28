@@ -126,7 +126,7 @@ func runBackground(fn func()) {
 // sync.WaitGroup A WaitGroup waits for a collection of goroutines to finish.
 //The main goroutine calls Add to set the number of goroutines to wait for.
 //Then each of the goroutines runs and calls Done when finished.
-//At the same time, Wait can be used to block until all goroutines have finished.(this is copied from the
+//At the same time, Wait can be used to block until all goroutines have finished.(this is from the
 // official documentations)
 	wg.Add(1)
 	go func() {
@@ -144,7 +144,8 @@ func init() {
 	gatewayDataMap = make(map[string]entities.GatewayData)
 
 	logger = log.New(os.Stderr)
-
+// basically for parsing the command line
+// but then why are we giving in values also, are they default values?????
 	flag.StringVar(&dir, "dir", ".", "directory to save data")
 	flag.StringVar(&externalHostName, "host", "rasp-019.scss.tcd.ie", "")
 	flag.IntVar(&externalPort, "port", 33000, "")
@@ -152,7 +153,12 @@ func init() {
 	flag.IntVar(&internalPort, "subport", 443, "")
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
-
+// why do we need internal and external server separately?????
+// is it just to handle incoming messages and outgoing messages separately?????
+// look at the server.go file in the p2p-server folder
+// wow need to read a lot
+// after this need to read all the files in the p2p-server folder
+// and also the ones in the demoCA folder
 	internal = p2pserver.NewServer(internalHostName, internalPort,
 		dir+"/internal.server.key",
 		dir+"/internal.server.crt",
@@ -165,8 +171,15 @@ func init() {
 		dir+"/ca.crt",
 		externalMsgCbk)
 // look at the file Record which is in the entities folder inside the p2p-server folder
+// in external, adding a node and token record, using entities.GenToken to generate a token using
+// node name; here it is using initialIndexHost
 	external.Record.Add(entities.GenToken(initialIndexHost), initialIndexHost)
-
+// from the official docs,
+// LoadX509KeyPair reads and parses a public/private key pair from a pair of files.
+// The files must contain PEM encoded data. The certificate file may contain intermediate certificates
+// following the leaf certificate to form a certificate chain. On successful return,
+// Certificate.Leaf will be nil because the parsed form of the certificate is not retained.
+// BUT WHERE HAVE WE MADE AND PUT THE CLIENT.CRT AND CLIENT.KEY FILES IN THE DIRECTORY ANYWAY?????
 	certPair, err := tls.LoadX509KeyPair(dir+"/client.crt", dir+"/client.key")
 	if err != nil {
 		logger.Error(err)
@@ -187,11 +200,16 @@ func init() {
 			},
 		},
 	}
+// line 183-203 still not clear 
 }
 
 func main() {
+	// RunTLS is a function in the server.go file
+	// it is basically telling our servers to listen and serve
+	// wow much error handling everywhere
 	runBackground(internal.RunTLS)
 	runBackground(external.RunTLS)
+	// not sure what is c here ?????
 	runBackground(c.Start)
 
 	wg.Wait()
