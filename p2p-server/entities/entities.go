@@ -1,4 +1,5 @@
 package entities
+// just defining the different entities here, nothing much complicated
 
 type (
 	RegisterRequest struct {
@@ -49,7 +50,7 @@ type (
 		Name string                `json:"name"`
 		Data map[string]SensorData `json:"data"` // SensorName : data
 	}
-
+// Gatewat data has an object of type device data which has an object of type sensor data
 	GatewayData struct {
 		Name string                `json:"name"`
 		Data map[string]DeviceData `json:"data"` // DeviceName : data
