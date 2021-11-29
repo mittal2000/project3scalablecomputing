@@ -36,6 +36,7 @@ import (
 	"github.com/fishjump/cs7ns1_project3/p2p-server/entities"
 // The below import is for better log handling
 	"github.com/withmandala/go-log"
+	"strconv"
 )
 
 // declaring different variables here
@@ -75,7 +76,7 @@ func externalMsgCbk(name string, req *entities.MessageRequest) {
 // look at the entities.go file (p2p-server -> entities -> entities.go)
 // that will make everything clear so for device, will have to change this from GatewayData to DeviceData
 // and for sensors will have to change this to SensorData
-	data := &entities.SensorData{}
+	// data := &entities.SensorData{}
 // the line below can be split into 2, err := json.Unmarshal([]byte(req.Data), data) this parses the JSON data
 // and stores it into the GatewayData type object "data"
 // and then if err != nil, we log the error (for this the last import was there)
@@ -84,13 +85,25 @@ func externalMsgCbk(name string, req *entities.MessageRequest) {
 //If v is nil or not a pointer, Unmarshal returns an InvalidUnmarshalError.
 //Unmarshal uses the inverse of the encodings that Marshal uses, allocating maps, slices, and pointers as necessary,
 // with some additional rules which can be read about here -> https://pkg.go.dev/encoding/json#Unmarshal
-	if err := json.Unmarshal([]byte(req.Data), data); err != nil {
-		logger.Error(err)
-		return
-	}
+	// if err := json.Unmarshal([]byte(req.Data), data); err != nil {
+	// 	logger.Error(err)
+	// 	return
+	// }
 // basically the gatewayDataMap stores details about the different gateways using mapping from the named
 // of the gateway to the data which is a Gateway Data type
-	sensorDataMap[name] = *data
+	// sensorDataMap[name] = *data
+	max := 100
+  	min := 10
+  	sensor1 := rand.Intn(max - min) + min
+	sensor2 := rand.Intn(max - min) + min
+	sensor3 := rand.Intn(max - min) + min
+	sensor4 := rand.Intn(max - min) + min
+	sensor5 := rand.Intn(max - min) + min
+	sensor6 := rand.Intn(max - min) + min
+	sensor7 := rand.Intn(max - min) + min
+	sensor8 := rand.Intn(max - min) + min
+	sensorDataMap := entities.SensorData{Name: internalHostName, Data: map[string]string{ "sensor1": strconv.Itoa(sensor1), "sensor2": strconv.Itoa(sensor2), "sensor3": strconv.Itoa(sensor3), "sensor4": strconv.Itoa(sensor4), "sensor5": strconv.Itoa(sensor5), "sensor6": strconv.Itoa(sensor6), "sensor7": strconv.Itoa(sensor7), "sensor8": strconv.Itoa(sensor8)}}
+
 // and now the map is encoded back into JSON
 	str, err := json.Marshal(sensorDataMap)
 	if err != nil {
@@ -142,18 +155,9 @@ func runBackground(fn func()) {
 // still nothing makes sense as to how it is working though haha
 func init() {
 	clientToken = make(map[string]string)
-	sensorDataMap = make(map[string]entities.SensorData)
-	max = 100
-  min = 10
-  sensor1 = rand.Intn(max - min) + min
-	sensor2 = rand.Intn(max - min) + min
-	sensor3 = rand.Intn(max - min) + min
-	sensor4 = rand.Intn(max - min) + min
-	sensor5 = rand.Intn(max - min) + min
-	sensor6 = rand.Intn(max - min) + min
-	sensor7 = rand.Intn(max - min) + min
-	sensor8 = rand.Intn(max - min) + min
-	logger = log.New(os.Stderr)
+	
+	
+	logger := log.New(os.Stderr)
 
 	flag.StringVar(&dir, "dir", ".", "directory to save data")
 	flag.StringVar(&externalHostName, "host", "rasp-019.scss.tcd.ie", "")
@@ -162,7 +166,7 @@ func init() {
 	flag.IntVar(&internalPort, "subport", 443, "")
 	flag.StringVar(&initialIndexHost, "index", "rasp-019.scss.tcd.ie", "")
 	flag.Parse()
-  sensorDataMap[internalHostName] = {"sensor1": sensor1, "sensor2": sensor2, "sensor3": sensor3, "sensor4": sensor4, "sensor5": sensor5, "sensor6": sensor6, "sensor7": sensor7, "sensor8": sensor8}
+	// sensorDataMap := entities.SensorData{Name: internalHostName, Data: map[string]string{ "sensor1": strconv.Itoa(sensor1), "sensor2": strconv.Itoa(sensor2), "sensor3": strconv.Itoa(sensor3), "sensor4": strconv.Itoa(sensor4), "sensor5": strconv.Itoa(sensor5), "sensor6": strconv.Itoa(sensor6), "sensor7": strconv.Itoa(sensor7), "sensor8": strconv.Itoa(sensor8)}}
 	external = p2pserver.NewServer(externalHostName, externalPort,
 		dir+"/external.server.key",
 		dir+"/external.server.crt",

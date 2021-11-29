@@ -1,14 +1,14 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
+	// "encoding/json"
+	// "errors"
 	"fmt"
-	"io/ioutil"
+	// "io/ioutil"
 	"net/http"
-	"strings"
+	// "strings"
 
-	"github.com/fishjump/cs7ns1_project3/p2p-server/entities"
+	// "github.com/fishjump/cs7ns1_project3/p2p-server/entities"
 	"github.com/robfig/cron/v3"
 )
 
@@ -19,8 +19,8 @@ var (
 func init() {
 	c = cron.New()
 
-	//c.AddFunc("@every 1m", detectExternelHearbeat)
-	c.AddFunc("@every 1m", detectInternelHearbeat)
+	c.AddFunc("@every 1m", detectExternelHearbeat)
+	// c.AddFunc("@every 1m", detectInternelHearbeat)
 	//c.AddFunc("@every 1m", fetchExternalNodes)
 }
 
@@ -28,34 +28,34 @@ func getUrl(host string, port int, path string) string {
 	return fmt.Sprintf("https://%s:%d%s", host, port, path)
 }
 
-// func detectExternelHearbeat() {
-// 	nodes := external.Record.GetNodes()
-// 	for _, name := range nodes {
-// 		resp, err := client.Get(getUrl(name, 33000, "/healthz"))
-// 		if err != nil {
-// 			logger.Error(err)
-// 		}
-//
-// 		if resp.StatusCode != http.StatusOK {
-// 			external.Record.RemoveByName(name)
-// 		}
-// 	}
-// }
-
-func detectInternelHearbeat() {
-	nodes := internal.Record.GetNodes()
+func detectExternelHearbeat() {
+	nodes := external.Record.GetNodes()
 	for _, name := range nodes {
-		resp, err := client.Get(getUrl(name, 443, "/healthz"))
+		resp, err := client.Get(getUrl(name, 33000, "/healthz"))
 		if err != nil {
 			logger.Error(err)
 		}
-		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
-			internal.Record.RemoveByName(name)
+			external.Record.RemoveByName(name)
 		}
 	}
 }
+
+// func detectInternelHearbeat() {
+// 	nodes := internal.Record.GetNodes()
+// 	for _, name := range nodes {
+// 		resp, err := client.Get(getUrl(name, 443, "/healthz"))
+// 		if err != nil {
+// 			logger.Error(err)
+// 		}
+// 		defer resp.Body.Close()
+
+// 		if resp.StatusCode != http.StatusOK {
+// 			internal.Record.RemoveByName(name)
+// 		}
+// 	}
+// }
 
 // func fetchExternalNodes() {
 // 	nodes := external.Record.GetNodes()
