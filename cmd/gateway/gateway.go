@@ -200,7 +200,7 @@ func init() {
 			},
 		},
 	}
-// line 183-203 still not clear 
+// line 183-203 still not clear
 }
 
 func main() {
@@ -210,6 +210,8 @@ func main() {
 	runBackground(internal.RunTLS)
 	runBackground(external.RunTLS)
 	// not sure what is c here ?????
+	// so in the cron file, c is a cron object (for scheduling)
+	// so if it is getting started over here means it will ask for a heartbeat every 1 minute 
 	runBackground(c.Start)
 
 	wg.Wait()

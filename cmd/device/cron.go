@@ -111,7 +111,7 @@ func externalUpdateList(host string, port int, local string) {
 }
 
 func externalMessage(host string, port int, local string) {
-	gwData, err := json.Marshal(gatewayDataMap[externalHostName])
+	gwData, err := json.Marshal(deviceDataMap[externalHostName])
 	if err != nil {
 		logger.Error(err)
 	}
